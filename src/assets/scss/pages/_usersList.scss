@@ -1,0 +1,35 @@
+.user_data{
+  margin-bottom: 40px;
+  padding: 0 20px;
+  //display: grid;
+  //grid-template-columns: 1fr 1fr;
+  //grid-gap: 20px;
+}
+.user_card{
+  .card-body{
+    padding-bottom: 0;
+  }
+  .card-footer{
+    text-align: right;
+  }
+  .card-header{
+    display: flex;
+    justify-content: space-between;
+    .admin_actions{
+      .btn{
+        background-color: transparent !important;
+        padding: 0;
+        border-color: transparent !important;
+      }
+    }
+  }
+}
+.user_logs{
+  overflow: hidden;
+}
+.users_filter{
+  .card-body{
+    border: none !important;
+    background: transparent;
+  }
+}

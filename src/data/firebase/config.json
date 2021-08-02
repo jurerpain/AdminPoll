@@ -1,0 +1,10 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyAweRZXwJArLrWZXLsL8-m9QrG2ypT_SuY",
+    "authDomain": "adminapp-99d8b.firebaseapp.com",
+    "projectId": "adminapp-99d8b",
+    "storageBucket": "adminapp-99d8b.appspot.com",
+    "messagingSenderId": "991340870682",
+    "appId": "1:991340870682:web:e9999145fd658fc4bda5a3"
+  }
+}
