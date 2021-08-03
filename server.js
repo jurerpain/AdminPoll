@@ -39,9 +39,8 @@ db.once('open', function() { console.log('DB connected')});
 
 //Variables
 const admin = {
-    login: 'danil',
+    login: 'admin',
     pass: '12345678',
-    id: '3301'
 }
 let users = [];
 
