@@ -1,7 +1,6 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import man from '../../../assets/images/dashboard/profile.jpg'
 import {Bell, FileText, LogIn, Mail, User} from 'react-feather';
-import {setDefaultLanguage, setLanguage, setLanguageCookie, setTranslations, translate,} from 'react-switch-lang';
 
 import {
     Account,
@@ -19,19 +18,10 @@ import {
     Taskboard,
     简体中文
 } from '../../../constant'
-import en from '../../../assets/i18n/en.json';
-import es from '../../../assets/i18n/es.json';
-import pt from '../../../assets/i18n/pt.json';
-import fr from '../../../assets/i18n/fr.json';
-import du from '../../../assets/i18n/du.json';
-import cn from '../../../assets/i18n/cn.json';
-import ae from '../../../assets/i18n/ae.json';
+
 import {useDispatch, useSelector} from "react-redux";
 import {useAuth} from "../../../context/auth/authProvider";
 
-setTranslations({en, es, pt, fr, du, cn, ae});
-setDefaultLanguage('en');
-setLanguageCookie();
 
 const Rightbar = () => {
     const theme = useSelector(store => store.Customizer.theme);
@@ -40,18 +30,8 @@ const Rightbar = () => {
     const [selected, setSelected] = useState("en")
     const [notificationDropDown, setNotificationDropDown] = useState(false)
     const {signout} = useAuth();
-    const handleSetLanguage = (key) => {
-        setLanguage(key);
-        setSelected(key)
-    };
 
-    const LanguageSelection = (language) => {
-        if (language) {
-            setLangdropdown(!language)
-        } else {
-            setLangdropdown(!language)
-        }
-    }
+
 
     const MoonlightToggle = (theme) => {
         if (theme ==='dark') {
@@ -101,4 +81,4 @@ const Rightbar = () => {
 
     );
 }
-export default translate(Rightbar);
+export default Rightbar;
