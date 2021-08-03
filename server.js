@@ -1,12 +1,20 @@
-const _PORT = process.env || 3301;
+const _PORT = 3301;
 //utils
 const findUserIndex = require("./backend/utils/findUserIndex");
 const findUser = require("./backend/utils/findUser");
+const path = require('path');
+const cors = require('cors');
+const corsOptions = {
+    origin: ['http://localhost:3000/'],
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 // express
 const express = require('express');
 const app = express();
+app.use(cors())
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 //http server
 const server= require('http').createServer(app);
@@ -230,7 +238,6 @@ io.on('connection', (socket) => {
 })
 
 //Server router
-
 app.post('/auth', (req, res) => {
     console.log(req.body);
     if( req.body.login === admin.login && req.body.password === admin.pass){

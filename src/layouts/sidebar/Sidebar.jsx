@@ -62,7 +62,7 @@ const Sidebar = (props) => {
         }
 
         // eslint-disable-next-line
-    }, [layout]);
+    }, []);
 
     const handleResize = () => {
         setWidth(window.innerWidth - 500);
@@ -195,11 +195,6 @@ const Sidebar = (props) => {
             }}/>
             <div className="sidebar-wrapper close_icon">
                 <div className="logo-wrapper">
-                    <Link to={`${process.env.PUBLIC_URL}/dashboard/default`}>
-                        <img className="img-fluid for-light" src={require("../../assets/images/logo/logo.png")} alt=""/>
-                        <img className="img-fluid for-dark" src={require("../../assets/images/logo/logo_dark.png")}
-                             alt=""/>
-                    </Link>
                     <div className="back-btn" onClick={() => responsiveSidebar()}><i className="fa fa-angle-left"/>
                     </div>
                     <div className="toggle-sidebar" onClick={() => openCloseSidebar(sidebartoogle)}><Grid
@@ -224,8 +219,8 @@ const Sidebar = (props) => {
                                     <Fragment key={i}>
                                         <li className="sidebar-main-title">
                                             <div>
-                                                <h6 className="lan-1">{props.t(Item.menutitle)}</h6>
-                                                <p className="lan-2">{props.t(Item.menucontent)}</p>
+                                                <h6 className="lan-1">{Item.menutitle}</h6>
+                                                <p className="lan-2">{Item.menucontent}</p>
                                             </div>
                                         </li>
                                         {Item.Items.map((menuItem, i) =>
@@ -238,7 +233,7 @@ const Sidebar = (props) => {
                                                            setNavActive(menuItem)
                                                        }}>
                                                         <menuItem.icon/>
-                                                        <span>{props.t(menuItem.title)}</span>
+                                                        <span>{menuItem.title}</span>
                                                         {menuItem.badge ? <label
                                                             className={menuItem.badge}>{menuItem.badgetxt}</label> : ""}
                                                         <div className="according-menu">
@@ -255,7 +250,7 @@ const Sidebar = (props) => {
                                                           className={`sidebar-link sidebar-title link-nav  ${menuItem.active ? 'active' : ''}`}
                                                           onClick={() => toggletNavActive(menuItem)}>
                                                         <menuItem.icon/>
-                                                        <span>{props.t(menuItem.title)}</span>
+                                                        <span>{menuItem.title}</span>
                                                         {menuItem.badge ? <label
                                                             className={menuItem.badge}>{menuItem.badgetxt}</label> : ""}
                                                     </Link>
@@ -280,7 +275,7 @@ const Sidebar = (props) => {
                                                                            onClick={(event) => {
                                                                                event.preventDefault();
                                                                                toggletNavActive(childrenItem)
-                                                                           }}>{props.t(childrenItem.title)}
+                                                                           }}>{childrenItem.title}
                                                                             <span className="sub-arrow">
                                                                               <i className="fa fa-chevron-right"/>
                                                                             </span>
@@ -297,7 +292,7 @@ const Sidebar = (props) => {
                                                                     {(childrenItem.type === 'link') ?
                                                                         <Link to={childrenItem.path + '/' + layout}
                                                                               className={`${childrenItem.active ? 'active' : ''}`}
-                                                                              onClick={() => toggletNavActive(childrenItem)}>{props.t(childrenItem.title)}</Link>
+                                                                              onClick={() => toggletNavActive(childrenItem)}>{childrenItem.title}</Link>
                                                                         : ''}
 
                                                                     {childrenItem.children ?
@@ -309,7 +304,7 @@ const Sidebar = (props) => {
                                                                                     {(childrenSubItem.type === 'link') ?
                                                                                         <Link to={childrenSubItem.path}
                                                                                               className={`${childrenSubItem.active ? 'active' : ''}`}
-                                                                                              onClick={() => toggletNavActive(childrenSubItem)}>{props.t(childrenSubItem.title)}</Link>
+                                                                                              onClick={() => toggletNavActive(childrenSubItem)}>{childrenSubItem.title}</Link>
                                                                                         : ''}
                                                                                 </li>
                                                                             )}
