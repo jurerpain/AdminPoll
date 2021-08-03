@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux'
 import {MENUITEMS} from './menu';
 import {ArrowLeft, ArrowRight, Grid} from 'react-feather';
 import {Link} from 'react-router-dom'
-import {translate} from 'react-switch-lang';
 import configDB from '../../data/customizer/config';
 // import {DefaultLayout} from '../theme-customizer';
 
@@ -334,4 +333,4 @@ const Sidebar = (props) => {
     );
 }
 
-export default translate(Sidebar);
+export default Sidebar;
