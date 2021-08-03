@@ -4,10 +4,6 @@ const findUserIndex = require("./backend/utils/findUserIndex");
 const findUser = require("./backend/utils/findUser");
 const path = require('path');
 const cors = require('cors');
-const corsOptions = {
-    origin: ['http://localhost:3000/'],
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
 
 // express
 const express = require('express');
@@ -237,6 +233,7 @@ io.on('connection', (socket) => {
     });
 })
 
+
 //Server router
 app.post('/auth', (req, res) => {
     console.log(req.body);
@@ -256,7 +253,7 @@ app.post('/auth', (req, res) => {
         })
     }
 })
-app.get('/api/get_users', async (req, res) => {
+app.get('/get_users', async (req, res) => {
     console.log('Getting users list');
 
     const users = await Users.find( function(err, users){
@@ -268,7 +265,7 @@ app.get('/api/get_users', async (req, res) => {
     });
     res.json(users);
 });
-app.post('/api/get_users', async (req, res) => {
+app.post('/get_users', async (req, res) => {
     console.log('Getting users list with filter');
     const {filter} = req.body;
     console.log(filter);
