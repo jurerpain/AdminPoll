@@ -253,6 +253,10 @@ app.post('/auth', (req, res) => {
         })
     }
 })
+app.get('/test', (req, res) => {
+    console.log('Test request');
+    res.send( `Test request ${req.method}`)
+})
 app.get('/get_users', async (req, res) => {
     console.log('Getting users list');
 
