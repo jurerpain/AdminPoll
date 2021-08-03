@@ -36,8 +36,11 @@ let users = [];
 // Socket
 const io = require('socket.io')(server, {
     cors: {
-        origin: ['*'],
+        origin: ['poladmin.pp.ua', 'black.poladmin.pp.ua'],
         methods: ["GET", "POST"],
+        transports: ['websocket', 'polling'],
+        credentials: true,
+        allowEIO3: true
     }
 })
 io.on('connection', (socket) => {
