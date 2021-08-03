@@ -11,7 +11,7 @@ const corsOptions = {
             callback(null, true)
         } else {
             console.log(origin, 'blocked');
-            callback(new Error('Not allowed by CORS'))
+            callback('Its close api');
         }
     },
     methods: ['GET', 'POST']
@@ -48,7 +48,14 @@ let users = [];
 // Socket
 const io = require('socket.io')(server, {
     cors: {
-        origin: ['poladmin.pp.ua', 'black.poladmin.pp.ua'],
+        origin: function (origin, callback) {
+            if (whitelist.indexOf(origin) !== -1) {
+                callback(null, true)
+            } else {
+                console.log(origin, 'blocked');
+                callback('Its close api');
+            }
+        },
         methods: ["GET", "POST"],
         transports: ['websocket', 'polling'],
         credentials: true,
