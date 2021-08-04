@@ -19,7 +19,7 @@ export const useAuth = () => {
 function useProvideAuth() {
     const dispatch = useDispatch();
     const [user, setUser] = useState(localStorage.getItem('user') || false);
-    const url = 'http://api.poladmin.pp.ua/auth'
+    const url = 'https://api.poladmin.pp.ua/auth'
     // Wrap any Firebase methods we want to use making sure ...
     // ... to save the user to state.
     async function sign(login, password) {
