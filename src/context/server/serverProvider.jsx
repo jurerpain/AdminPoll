@@ -11,7 +11,7 @@ export const useServer = () => {
 
 const useProvideServer = () =>{
 
-    const _url = 'http://api.poladmin.pp.ua';
+    const _url = 'https://api.poladmin.pp.ua';
 
 
     const getAllUsers = async () => {

@@ -4,7 +4,7 @@ const findUserIndex = require("./backend/utils/findUserIndex");
 const findUser = require("./backend/utils/findUser");
 const path = require('path');
 const cors = require('cors');
-const whitelist = ['http://black.poladmin.pp.ua', 'http://poladmin.pp.ua']
+const whitelist = ['https://black.poladmin.pp.ua', 'https://poladmin.pp.ua']
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
