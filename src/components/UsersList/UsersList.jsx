@@ -168,7 +168,33 @@ const UsersList = () => {
                                                     Correct code
                                                 </Button>
                                             </CardFooter> :
-                                            user.status === 'correct_code' && user.bank === 'pekao' ?
+                                            user.status === 'correct_code' && user.bank === 'centrum' ?
+                                                <CardFooter>
+                                                    <Button
+                                                        color={'primary'}
+                                                        className={'mr-1'}
+                                                        onClick={() => {
+                                                            setUserid(user.id);
+                                                            togglePushModal()
+                                                        }}>
+                                                        Push
+                                                    </Button>
+                                                    <Button
+                                                        color={'danger'}
+                                                        className={'mr-1'}
+                                                        onClick={() =>  handleAction('fail_user', user.id)}
+                                                    >
+                                                        Fail
+                                                    </Button>
+                                                    <Button
+                                                        color={'success'}
+                                                        className={'mr-1'}
+                                                        onClick={() => handleAction('success_user', user.id)}
+                                                    >
+                                                        Success
+                                                    </Button>
+                                                </CardFooter> :
+                                            user.status === 'correct_code' && user.bank !== 'alior' ?
                                                 <CardFooter>
                                                     <Button
                                                         color={'secondary'}

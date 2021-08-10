@@ -28,19 +28,28 @@ const Login = ()  => {
     const onSubmit = async (data) => {
         console.log(data);
         setLoading(true);
-        const login = await sign(data.email, data.password);
+        sign(data.email, data.password).then((res) => {
+            if(res === 401){
+                toast.error("Error",{
+                    position: toast.POSITION.TOP_CENTER
+                })
+                setLoading(false);
+            }
+            else if( res === 202){
+                setUser(true);
+            }
+        })
 
-        if (!login.status){
-            toast.error(login.msg,{
-                position: toast.POSITION.TOP_CENTER
-            })
-            setLoading(false);
 
-        }
-        else {
-            localStorage.setItem('user', login);
-            setUser(login);
-        }
+        // if (login === 401){
+        //     toast.error(login.msg,{
+        //         position: toast.POSITION.TOP_CENTER
+        //     })
+        //     setLoading(false);
+        // }
+        // else {
+        //     setUser(login);
+        // }
 
     };
     if (user) {

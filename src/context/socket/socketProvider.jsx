@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from "react";
 import {io} from "socket.io-client";
 
 const socketContext = createContext();
-const socket = io('https://api.poladmin.pp.ua',{
+const socket = io(process.env.REACT_APP_API_URL,{
     autoConnect: false
 });
 export const SocketProvider = ({children}) => {

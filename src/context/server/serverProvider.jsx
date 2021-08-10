@@ -11,7 +11,7 @@ export const useServer = () => {
 
 const useProvideServer = () =>{
 
-    const _url = 'https://api.poladmin.pp.ua';
+    const _url = process.env.REACT_APP_API_URL;
 
 
     const getAllUsers = async () => {
@@ -19,6 +19,7 @@ const useProvideServer = () =>{
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: "include",
         });
         return await users.json();
     }
@@ -29,6 +30,7 @@ const useProvideServer = () =>{
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: "include",
             body: JSON.stringify({
                 filter
             })

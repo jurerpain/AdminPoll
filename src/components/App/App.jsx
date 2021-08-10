@@ -15,9 +15,9 @@ const App = () => {
     const { user } = useAuth();
     useCustomizer();
 
-    if(user === null) {
-        return <Loader/>
-    }
+    // if(user === null) {
+    //     return <Loader/>
+    // }
     return (
         <>
             <Switch>

@@ -18,21 +18,34 @@ export const useAuth = () => {
 
 function useProvideAuth() {
     const dispatch = useDispatch();
-    const [user, setUser] = useState(localStorage.getItem('user') || false);
-    const url = 'https://api.poladmin.pp.ua/auth'
+    const [user, setUser] = useState(null);
+    const url = `${process.env.REACT_APP_API_URL}`
     // Wrap any Firebase methods we want to use making sure ...
     // ... to save the user to state.
-    async function sign(login, password) {
-        const res = await fetch (url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                login, password
-            })
+    async function checkAuth(){
+        const res = await fetch(`${url}/auth/check`,{
+            credentials: 'include',
+        }).then((res) => {
+            if (res.status === 401){
+                setUser(false);
+            }else if (res.status === 202){
+                setUser(true)
+            }
         })
-        return await res.json();
+
+    }
+    async function sign(login, password) {
+        const str = btoa(`${login}:${password}`);
+            const res = await fetch (`${url}/auth`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `basic ${str}`
+            },
+        })
+        console.log(res.status)
+        return res.status;
     }
 
     const signout = () => {
@@ -47,7 +60,7 @@ function useProvideAuth() {
     // ... latest auth object.
     useEffect(() => {
         // TODO: Optimize requests
-
+        checkAuth();
     }, []);
     // Return the user object and auth methods
     return {

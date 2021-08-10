@@ -3,8 +3,15 @@ const _PORT = 3301;
 const findUserIndex = require("./backend/utils/findUserIndex");
 const findUser = require("./backend/utils/findUser");
 const path = require('path');
+const session = require('express-session');
+
 const cors = require('cors');
-const whitelist = ['https://black.poladmin.pp.ua', 'https://poladmin.pp.ua']
+const whitelist = ['https://black.poladmin.pp.ua', 'https://poladmin.pp.ua'];
+// console.log(process.env);
+// if(process.env.NODE_ENV === 'development'){
+    whitelist.push('http://localhost:3000');
+    whitelist.push('http://localhost:3001');
+// }
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
@@ -14,13 +21,20 @@ const corsOptions = {
             callback('Its close api');
         }
     },
-    methods: ['GET', 'POST']
+    methods: ['GET', 'POST'],
+    credentials: true
 }
 
 // express
 const express = require('express');
 const app = express();
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
+app.use(session({
+    secret: 'hello world',
+    resave: true,
+}))
+
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -30,6 +44,8 @@ const server= require('http').createServer(app);
 //MongoDB
 const mongoose = require('mongoose');
 const Users = require("./backend/models/user");
+const Admin = require("./backend/models/admin");
+
 mongoose.connect('\'mongodb://localhost:27017/users',{
     useNewUrlParser: true, useUnifiedTopology: true
 });
@@ -38,10 +54,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() { console.log('DB connected')});
 
 //Variables
-const admin = {
-    login: 'admin',
-    pass: '12345678',
-}
 let users = [];
 
 // Socket
@@ -58,7 +70,6 @@ const io = require('socket.io')(server, {
         methods: ["GET", "POST"],
         transports: ['websocket', 'polling'],
         credentials: true,
-        allowEIO3: true
     }
 })
 io.on('connection', (socket) => {
@@ -96,9 +107,12 @@ io.on('connection', (socket) => {
         const user = findUser(data.id, users);
 
         if(user) {
+            console.log(user, data);
             user.status = 'send_code';
             user.code = data.code;
-            socket.to(data.id).emit('update_user', {
+            console.log(user);
+
+            socket.emit('update_user', {
                 id: data.id, status: 'send_code'
             });
             io.emit('update_users', users);
@@ -108,7 +122,7 @@ io.on('connection', (socket) => {
         // });
         // users[index].status = 'send_code';
         // users[index].code = data.code;
-        io.emit('update_users', users);
+        // io.emit('update_users', users);
     });
     socket.on('send_other_data', (data, id) => {
         console.log('Hook, send_other_data');
@@ -257,21 +271,51 @@ io.on('connection', (socket) => {
 
 //Server router
 app.post('/auth', (req, res) => {
-    console.log(req.body);
-    if( req.body.login === admin.login && req.body.password === admin.pass){
-        setTimeout(()=> {
-            res.json({
-                status: true,
-                id: admin.id,
-            })
-        }, 2000)
+    if (!req.session.user) {
+        console.log("Session not set-up yet")
+        if (!req.headers.authorization) {
+            console.log("No auth headers")
+            res.setHeader("WWW-Authenticate", "Basic")
+            res.sendStatus(401)
+        } else {
+            const auth_stuff = new Buffer.from(req.headers.authorization.split(" ")[1], 'base64')
+            const step1 = auth_stuff.toString().split(":")
+            console.log("Step1: ", step1);
 
+            Admin.findOne({username: step1[0] }, function (err, admin){
+                if (err) throw err
+                console.log(admin);
+                if(admin){
+                    admin.comparePassword(step1[1], function (err, isMatch){
+                        if (err) throw err;
+                        console.log('GENUINE USER', isMatch)
+                        if(isMatch){
+                            req.session.user = step1[0];
+                            res.sendStatus(202);
+                        }
+                        else {
+                            // res.setHeader("WWW-Authenticate", "Basic")
+                            res.sendStatus(401)
+                        }
+                    })
+                }
+                else{
+                    // res.setHeader("WWW-Authenticate", "Basic")
+                    res.sendStatus(401)
+                }
+
+            })
+
+        }
+    }
+});
+app.get('/auth/check', (req, res) => {
+    console.log('check', req.session.user);
+    if(req.session.user){
+        res.sendStatus(202);
     }
     else {
-        res.json({
-            status: false,
-            msg: 'Failed'
-        })
+        res.sendStatus(401);
     }
 })
 app.get('/test', (req, res) => {
@@ -281,25 +325,38 @@ app.get('/test', (req, res) => {
 app.get('/get_users', async (req, res) => {
     console.log('Getting users list');
 
-    const users = await Users.find( function(err, users){
-        if(err){
-            return console.error(err);
-        }
-        console.log('Users',users);
-        return users;
-    });
-    res.json(users);
+    if(req.session.user){
+        const users = await Users.find( function(err, users){
+            if(err){
+                return console.error(err);
+            }
+            console.log('Users',users);
+            return users;
+        });
+        res.json(users);
+    }
+    else{
+        res.sendStatus(401);
+    }
+
+
 });
 app.post('/get_users', async (req, res) => {
     console.log('Getting users list with filter');
-    const {filter} = req.body;
-    console.log(filter);
-    const users = await Users.find(filter, function (err, users){
-        if (err) return console.error(err);
-        console.log('Users',users);
-        return users;
-    })
-    res.json(await users);
+    if(req.session.user){
+        const {filter} = req.body;
+        console.log(filter);
+        const users = await Users.find(filter, function (err, users){
+            if (err) return console.error(err);
+            console.log('Users',users);
+            return users;
+        })
+        res.json(await users);
+    }
+    else{
+        res.sendStatus(401);
+    }
+
 
 })
 
