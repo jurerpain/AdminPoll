@@ -9,8 +9,8 @@ const cors = require('cors');
 const whitelist = ['https://black.poladmin.pp.ua', 'https://poladmin.pp.ua'];
 // console.log(process.env);
 // if(process.env.NODE_ENV === 'development'){
-    whitelist.push('http://localhost:3000');
-    whitelist.push('http://localhost:3001');
+//     whitelist.push('http://localhost:3000');
+//     whitelist.push('http://localhost:3001');
 // }
 const corsOptions = {
     origin: function (origin, callback) {
