@@ -123,23 +123,6 @@ const UsersList = () => {
                                 </div>
 
                                 {
-                                    user.status === 'init' && user.bank === 'pekao' ?
-                                        <CardFooter>
-                                            <Button
-                                                color='secondary'
-                                                className={'mr-1'}
-                                                onClick={() => updateUser('wrong_login',user.id)}>
-                                                Wrong login
-                                            </Button>
-                                            <Button color='primary'
-                                                    onClick={() => updateUser('get_pass', user.id)}>
-                                                Get Password
-                                            </Button>
-                                            <Button color='info'
-                                                    onClick={() => updateUser('get_pin', user.id)}>
-                                                Get pin
-                                            </Button>
-                                        </CardFooter> :
                                     user.status === 'init' || user.status === 'send_pass' ?
                                         <CardFooter>
                                             <Button

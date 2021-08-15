@@ -39,6 +39,7 @@ const Logs = () => {
     // console.log(users);
     useEffect(() => {
         getAllUsers().then((res) => {
+            console.log(res);
             setFields({
                 success: true,
                 fail: true,
@@ -116,6 +117,7 @@ const Logs = () => {
                                         <th scope="col">{"Bank"}</th>
                                         <th scope="col">{"Status"}</th>
                                         <th scope="col">{"Amount"}</th>
+                                        <th scope={'col'}>RefID</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -133,6 +135,7 @@ const Logs = () => {
                                                     }
                                                 </td>
                                                 <td>{user.amount}</td>
+                                                <td>{user.ref}</td>
                                             </tr>
                                         ))
                                     }

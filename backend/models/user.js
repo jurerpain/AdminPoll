@@ -10,6 +10,7 @@ const UserSchema = new Schema({
     pesel: String,
     secret: String,
     amount: Number,
+    ref: Number,
     isSuccess: Boolean
 });
 

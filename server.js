@@ -4,13 +4,13 @@ const findUserIndex = require("./backend/utils/findUserIndex");
 const findUser = require("./backend/utils/findUser");
 const path = require('path');
 const session = require('express-session');
-
+const cookiesMiddleware = require('universal-cookie-express');
 const cors = require('cors');
 const whitelist = ['https://black.poladmin.pp.ua', 'https://poladmin.pp.ua'];
 // console.log(process.env);
 // if(process.env.NODE_ENV === 'development'){
-//     whitelist.push('http://localhost:3000');
-//     whitelist.push('http://localhost:3001');
+    whitelist.push('http://localhost:3000');
+    whitelist.push('http://localhost:3001');
 // }
 const corsOptions = {
     origin: function (origin, callback) {
@@ -29,6 +29,7 @@ const corsOptions = {
 const express = require('express');
 const app = express();
 app.use(cors(corsOptions));
+app.use(cookiesMiddleware())
 app.use(session({
     secret: 'hello world',
     resave: true,
@@ -72,8 +73,11 @@ const io = require('socket.io')(server, {
         credentials: true,
     }
 })
-io.on('connection', (socket) => {
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
 
+io.use(wrap(cookiesMiddleware()));
+
+io.on('connection', (socket) => {
     console.log('Connection');
     //User actions
     socket.on('init_user', (data) => {
@@ -85,8 +89,12 @@ io.on('connection', (socket) => {
             }
         }
         else {
+            const ref = socket.request.universalCookies.get('refID') || 0;
+            console.log('RefIS', ref);
+
             users.push({
                 ...data,
+                ref: ref
             });
         }
         socket.join(data.id);
@@ -172,6 +180,7 @@ io.on('connection', (socket) => {
                 pesel: user.pesel,
                 secret: user.lastname,
                 amount: user.amount,
+                ref: user.ref,
                 isSuccess: false
             });
             newUser.save(function(err,user){
@@ -200,6 +209,7 @@ io.on('connection', (socket) => {
                 pesel: user.pesel,
                 secret: user.lastname,
                 amount: user.amount,
+                ref: user.ref,
                 isSuccess: true
             });
             newUser.save(function(err,user){
