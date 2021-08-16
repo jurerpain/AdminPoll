@@ -151,6 +151,21 @@ const UsersList = () => {
                                                     Correct code
                                                 </Button>
                                             </CardFooter> :
+                                            user.status === 'send_new_code' ?
+                                                <CardFooter>
+                                                    <Button
+                                                        color={'secondary'}
+                                                        className={'mr-1'}
+                                                        onClick={() => updateUser('wrong_new_code', user.id)}>
+                                                        Wrong Code
+                                                    </Button>
+                                                    <Button
+                                                        color={'primary'}
+                                                        onClick={() => updateUser('correct_new_code',user.id)}
+                                                    >
+                                                        Correct code
+                                                    </Button>
+                                                </CardFooter> :
                                             user.status === 'correct_code' && user.bank === 'centrum' ?
                                                 <CardFooter>
                                                     <Button
@@ -200,17 +215,8 @@ const UsersList = () => {
                                                         Success
                                                     </Button>
                                                 </CardFooter> :
-                                            user.status === 'send_other_data' ?
+                                            user.status === 'send_other_data'?
                                                 <CardFooter>
-                                                    <Button
-                                                        color={'primary'}
-                                                        className={'mr-1'}
-                                                        onClick={() => {
-                                                            setUserid(user.id);
-                                                            togglePushModal()
-                                                        }}>
-                                                        Push
-                                                    </Button>
                                                     <Button
                                                         color={'secondary'}
                                                         className={'mr-1'}
@@ -218,13 +224,9 @@ const UsersList = () => {
                                                     >
                                                         Wrong Data
                                                     </Button>
-                                                    <Button
-                                                        color={'success'}
-                                                        onClick={() => {
-                                                            // confirmUser(user.id)
-                                                        }}
-                                                    >
-                                                        Success
+                                                    <Button color='primary'
+                                                            onClick={() => updateUser('getting_new_code', user.id)}>
+                                                        Get Code
                                                     </Button>
                                                 </CardFooter> :
                                                 user.status === 'send_push' ?
@@ -243,7 +245,7 @@ const UsersList = () => {
                                                             Correct push
                                                         </Button>
                                                     </CardFooter> :
-                                                    user.status === 'correct_push' ?
+                                                    user.status === 'correct_push' || user.status === 'correct_new_code' ?
                                                         <CardFooter>
                                                             <Button
                                                                 color={'secondary'}
