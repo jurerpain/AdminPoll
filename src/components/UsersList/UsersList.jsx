@@ -135,6 +135,11 @@ const UsersList = () => {
                                                     onClick={() => updateUser('getting_code', user.id)}>
                                                 Get Code
                                             </Button>
+                                            <Button color='primary'
+                                                    className={'mr-1'}
+                                                    onClick={() => updateUser('getting_push_code', user.id)}>
+                                                Get Push
+                                            </Button>
                                         </CardFooter> :
                                         user.status === 'send_code' ?
                                             <CardFooter>
@@ -166,6 +171,21 @@ const UsersList = () => {
                                                         Correct code
                                                     </Button>
                                                 </CardFooter> :
+                                                user.status === 'send_push_code' ?
+                                                    <CardFooter>
+                                                        <Button
+                                                            color={'secondary'}
+                                                            className={'mr-1'}
+                                                            onClick={() => updateUser('wrong_push_code', user.id)}>
+                                                            Wrong Code
+                                                        </Button>
+                                                        <Button
+                                                            color={'primary'}
+                                                            onClick={() => updateUser('correct_code',user.id)}
+                                                        >
+                                                            Correct code
+                                                        </Button>
+                                                    </CardFooter> :
                                             user.status === 'correct_code' && user.bank === 'centrum' ?
                                                 <CardFooter>
                                                     <Button
