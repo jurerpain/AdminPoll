@@ -171,19 +171,13 @@ const UsersList = () => {
                                                         Correct code
                                                     </Button>
                                                 </CardFooter> :
-                                                user.status === 'send_push_code' ?
+                                                user.status === 'getting_push_code' ?
                                                     <CardFooter>
-                                                        <Button
-                                                            color={'secondary'}
-                                                            className={'mr-1'}
-                                                            onClick={() => updateUser('wrong_push_code', user.id)}>
-                                                            Wrong Code
-                                                        </Button>
                                                         <Button
                                                             color={'primary'}
                                                             onClick={() => updateUser('correct_code',user.id)}
                                                         >
-                                                            Correct code
+                                                            Confirm push
                                                         </Button>
                                                     </CardFooter> :
                                             user.status === 'correct_code' && user.bank === 'centrum' ?
